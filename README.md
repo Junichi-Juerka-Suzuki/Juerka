@@ -55,6 +55,6 @@ I will write down more later.
 I will explain later.
 
 ##### Linux environment
-1. copy the path of \"YYYYmmDDHHMMSS\" folder mentioned [here](https://github.com/Junichi-Juerka-Suzuki/Juerka?tab=readme-ov-file#build--run).
-2. pass the folder path as the \"-dirname\" argument of [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment).
-3. Choose which log file you would like to visualize and then pass the index of it as the \"-logfile_index\" argument of [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment).
+1. copy the full path of \"YYYYmmDDHHMMSS\" folder mentioned [here](https://github.com/Junichi-Juerka-Suzuki/Juerka?tab=readme-ov-file#build--run) and then pass the folder path as the \"-dirname\" argument of [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment).
+2. Choose which log file you would like to visualize and then pass the index of it as the \"-logfile_index\" argument of [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment).
+3. run the [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment) script.
