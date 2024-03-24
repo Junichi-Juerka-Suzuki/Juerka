@@ -31,7 +31,7 @@ Thank you!.
 ##### build & run
 1. Clone the repository and open it with Microsoft Visual Studio 2022.
 1. And then set the build target as the WSL: Ubuntu.
-1. Set debug target as the Juerka and run.
+1. Set the debug target as the \"Juerka\" and run.
 1. Then you can find output \"log/YYYYmmDDHHMMSS\" folder as in the same folder as the Juerka executable file.
 
 I will write down more later.
