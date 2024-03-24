@@ -39,3 +39,22 @@ I will write down more later.
 #### Linux environment
 
 I will write down more later.
+
+### How to visualize the simulation result?
+#### Prerequisits
+* Microsoft Visual Studio 2022 Version 17.10.0 Preview 2.0 or later is recommended.
+  - Python build package
+* Python 3.9.2 or later is recommended.
+* Numpy 1.26.4 or later is recommended.
+* matplotlib 3.8.3 or later is recommended.
+* [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection)
+
+#### raster plot
+##### Windows environment
+
+I will explain later.
+
+##### Linux environment
+1. copy the path of \"YYYYmmDDHHMMSS\" folder mentioned [here](https://github.com/Junichi-Juerka-Suzuki/Juerka?tab=readme-ov-file#build--run).
+2. pass the folder path as the \"-dirname\" argument of [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment).
+3. Choose which log file you would like to visualize and then pass the index of it as the \"-logfile_index\" argument of [Juerka-Utility-Collection](https://github.com/Junichi-Juerka-Suzuki/Juerka-Utility-Collection#linux-environment).
