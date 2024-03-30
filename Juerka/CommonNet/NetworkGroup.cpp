@@ -89,16 +89,17 @@ namespace Juerka::CommonNet
 	(
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
-		vector< array<vector<elec_t>, 2> >& synaptic_current_list
+		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+		vector<	array<set<synapse_t>, 2> >& strong_edge_list
 	) noexcept
 	{
 		if(is_run_parallel)
 		{
-			parallel_run(arg_time_keep, neuron_list, synaptic_current_list);
+			parallel_run(arg_time_keep, neuron_list, synaptic_current_list, strong_edge_list);
 		}
 		else
 		{
-			serial_run(arg_time_keep, neuron_list, synaptic_current_list);
+			serial_run(arg_time_keep, neuron_list, synaptic_current_list, strong_edge_list);
 		}
 	}
 
@@ -106,14 +107,15 @@ namespace Juerka::CommonNet
 	(
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
-		vector< array<vector<elec_t>, 2> >& synaptic_current_list
+		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+		vector<	array<set<synapse_t>, 2> >& strong_edge_list
 	) noexcept
 	{
 		exchange_internetwork_signals(neuron_list, synaptic_current_list);
 
 		for(uint_fast32_t i=0; i<Ng; i+=1)
 		{
-			network_list[i].serial_run(arg_time_keep, neuron_list[i], synaptic_current_list[i]);
+			network_list[i].serial_run(arg_time_keep, neuron_list[i], synaptic_current_list[i], strong_edge_list[i]);
 		}
 	}
 
@@ -121,7 +123,8 @@ namespace Juerka::CommonNet
 	(
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
-		vector< array<vector<elec_t>, 2> >& synaptic_current_list
+		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+		vector< array<set<synapse_t>, 2> >& strong_edge_list
 	) noexcept
 	{
 		do_parallel_progress.a.store(0);
@@ -130,7 +133,7 @@ namespace Juerka::CommonNet
 
 		for(uint_fast32_t i=0; i<n_asyncs; i+=1)
 		{
-			prepare_and_run_asyncs(bind(&NetworkGroup::do_parallel_run, this, arg_time_keep, ref(neuron_list), ref(synaptic_current_list), i), i);
+			prepare_and_run_asyncs(bind(&NetworkGroup::do_parallel_run, this, arg_time_keep, ref(neuron_list), ref(synaptic_current_list), ref(strong_edge_list), i), i);
 		}
 
 		wait_all_asyncs();
@@ -141,6 +144,7 @@ namespace Juerka::CommonNet
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
 		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+		vector< array<set<synapse_t>, 2> >& strong_edge_list,
 		uint_fast32_t thread_serial_number
 	) noexcept
 	{
@@ -160,7 +164,7 @@ namespace Juerka::CommonNet
 					break;
 				}
 
-				network_list[i].serial_run(arg_time_keep, neuron_list[i], synaptic_current_list[i]);
+				network_list[i].serial_run(arg_time_keep, neuron_list[i], synaptic_current_list[i], strong_edge_list[i]);
 			}//for
 		}//while
 	}//void NetworkGroup::parallel_run

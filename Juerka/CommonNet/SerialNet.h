@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <random>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -24,6 +25,7 @@ namespace Juerka::CommonNet
 	using std::ofstream;
 	using std::ostream;
 	using std::ref;
+	using std::set;
 	using std::to_string;
 	using std::uniform_int_distribution;
 	using std::unique_ptr;
@@ -49,7 +51,8 @@ namespace Juerka::CommonNet
 		(
 			const uint_fast32_t arg_id,
 			const SerialParam serial_param,
-			unique_ptr<AbstractTimeRecorder>&& arg_time_recorder
+			unique_ptr<AbstractTimeRecorder>&& arg_time_recorder,
+			const LogParam log_param
 		) noexcept :
 		  id(arg_id),
 		  time_keep(serial_param.time_keep),
@@ -67,7 +70,8 @@ namespace Juerka::CommonNet
 		  rand_seed(serial_param.rand_seed),
 		  engine_drive(serial_param.rand_seed),
 		  dist_drive(EXTERNAL_DRIVE_INPUT_START_INDEX, EXTERNAL_DRIVE_INPUT_END_CENTINEL-1),
-		  time_recorder(move(arg_time_recorder))
+		  time_recorder(move(arg_time_recorder)),
+		  is_record_weights(log_param.is_record_weights)
 		{
 			for(neuron_t i=0; i<N; i+=1)
 			{
@@ -101,7 +105,8 @@ namespace Juerka::CommonNet
 		(
 			step_time_t arg_time_keep,
 			array<vector<neuron_t>, 2>& target_neuron_list,
-			array<vector<elec_t>, 2>& synaptic_current_list
+			array<vector<elec_t>, 2>& synaptic_current_list,
+			array<set<synapse_t>, 2>& strong_edge_list
 		) noexcept;
 
 		//routines.
@@ -139,19 +144,9 @@ namespace Juerka::CommonNet
 			const elec_t weight
 		) noexcept;
 
-		void do_update_weight_diff_time_positive
-		(
-			const synapse_t serial_index,
-			const elec_t diff_time,
-			const elec_t weight
-		) noexcept;
-
-		void do_update_weight_diff_time_negative
-		(
-			const synapse_t serial_index,
-			const elec_t diff_time,
-			const elec_t weight
-		) noexcept;
+		//for network analysis.
+	private:
+		void extract_network_graph_edges(array<set<synapse_t>, 2>& strong_edge_list);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -199,6 +194,7 @@ namespace Juerka::CommonNet
 		inline constexpr static elec_t conn_weight_init_i = -5.0;
 		inline constexpr static elec_t conn_weight_to_external_e = 6.0;
 		inline constexpr static elec_t conn_weight_to_external_i = -5.0;
+		inline constexpr static elec_t conn_weight_network_generate_threshold_e = 40.0;
 
 		//STDP parameter(s).
 	private:
@@ -282,9 +278,11 @@ namespace Juerka::CommonNet
 
 		vector<neuron_t> neuron_indices;
 
-		//utilities for debugging purpose.
+		//utilities for monitoring purpose.
 	private:
+		bool is_record_weights;
+		set<synapse_t> extracted;
+
 		unique_ptr<AbstractTimeRecorder> time_recorder;
 	};
 }
-

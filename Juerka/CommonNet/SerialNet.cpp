@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <execution>
 #include <iostream>
+#include <iterator>
 #include <random>
 
 #include "Common.h"
@@ -22,11 +23,14 @@ namespace Juerka::CommonNet
 {
 	using std::array;
 	using std::cerr;
+	using std::copy_if;
 	using std::cout;
 	using std::endl;
 	using std::execution::unseq;
+	using std::inserter;
 	using std::int_fast64_t;
 	using std::mt19937_64;
+	using std::set_difference;
 	using std::size_t;
 	using std::sort;
 	using std::uniform_int_distribution;
@@ -36,7 +40,8 @@ namespace Juerka::CommonNet
 	(
 		step_time_t arg_time_keep,
 		array<vector<neuron_t>, 2>& target_neuron_list,
-		array<vector<elec_t>, 2>& synaptic_current_list
+		array<vector<elec_t>, 2>& synaptic_current_list,
+		array<set<synapse_t>, 2>& strong_edge_list
 	) noexcept
 	{
 		time_keep = arg_time_keep;
@@ -78,20 +83,6 @@ namespace Juerka::CommonNet
 		time_recorder->start_record();
 
 		update_neurons();
-
-		time_recorder->end_record();
-
-		time_recorder->start_record();
-
-		//serial
-//		if(0)
-//		{
-//			const auto& target_vector(is_fired_list);
-//			for(auto it=target_vector.begin(); it!=target_vector.end(); it++)
-//			{
-//				out << time_keep << ' ' << (*it) << '\n';
-//			}
-//		}
 
 		time_recorder->end_record();
 
@@ -170,6 +161,18 @@ namespace Juerka::CommonNet
 			const step_time_t index_to_clear(time_keep % D);
 
 			exc_fire_reservation[index_to_clear].clear();
+		}
+
+		time_recorder->end_record();
+
+		time_recorder->start_record();
+
+		if (is_record_weights)
+		{
+			strong_edge_list[ADDITION_SIDE].clear();
+			strong_edge_list[SUBTRACTION_SIDE].clear();
+
+			extract_network_graph_edges(strong_edge_list);
 		}
 
 		time_recorder->end_record();
@@ -611,5 +614,35 @@ namespace Juerka::CommonNet
 		}
 
 		conn_weight[serial_index] = new_j_candidate;
+	}
+
+	void SerialNet::extract_network_graph_edges(array<set<synapse_t>, 2>& strong_edge_list)
+	{
+		set<synapse_t> new_extracted;
+
+		for(synapse_t i=0; i<N*C; i++)
+		{
+			elec_t weight(conn_weight[i]);
+			if (weight >= conn_weight_network_generate_threshold_e)
+			{
+				new_extracted.emplace(i);
+			}
+		}
+
+		set_difference
+		(
+			new_extracted.begin(), new_extracted.end(),
+			extracted.begin(), extracted.end(),
+			inserter(strong_edge_list[ADDITION_SIDE], strong_edge_list[ADDITION_SIDE].end())
+		);
+	
+		set_difference
+		(
+			extracted.begin(), extracted.end(),
+			new_extracted.begin(), new_extracted.end(),
+			inserter(strong_edge_list[SUBTRACTION_SIDE], strong_edge_list[SUBTRACTION_SIDE].end())
+		);
+
+		extracted.swap(new_extracted);
 	}
 }

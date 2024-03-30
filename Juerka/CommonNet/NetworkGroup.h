@@ -100,7 +100,8 @@ namespace Juerka::CommonNet
 		(
 			uint_fast32_t arg_Ng,
 			bool arg_is_run_parallel=false,
-			bool arg_is_monitor_performance=false
+			bool arg_is_monitor_performance = false,
+			bool arg_is_record_weights = false
 		) noexcept :
 		  Ng(arg_Ng),
 		  v(static_cast<elec_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*sizeof(elec_t))))),
@@ -115,6 +116,11 @@ namespace Juerka::CommonNet
 		  do_parallel_progress(0),
 	  	  task_signal_list(n_asyncs)
 		{
+			const LogParam log_param
+			{
+				.is_record_weights = arg_is_record_weights,
+			};
+
 			const size_t N(SerialNet::N);
 			const size_t C(SerialNet::C);
 
@@ -136,11 +142,11 @@ namespace Juerka::CommonNet
 
 				if(arg_is_monitor_performance)
 				{
-					network_list.emplace_back(i, move(serial_param), ((i==0)?(move(unique_ptr<AbstractTimeRecorder>(new TimeRecorder()))):(move(unique_ptr<AbstractTimeRecorder>(new AbstractTimeRecorder())))));
+					network_list.emplace_back(i, move(serial_param), ((i==0)?(move(unique_ptr<AbstractTimeRecorder>(new TimeRecorder()))):(move(unique_ptr<AbstractTimeRecorder>(new AbstractTimeRecorder())))), log_param);
 				}
 				else
 				{
-					network_list.emplace_back(i, move(serial_param), move(unique_ptr<AbstractTimeRecorder>(new AbstractTimeRecorder())));
+					network_list.emplace_back(i, move(serial_param), move(unique_ptr<AbstractTimeRecorder>(new AbstractTimeRecorder())), log_param);
 				}
 			}
 
@@ -168,21 +174,24 @@ namespace Juerka::CommonNet
 		(
 			step_time_t arg_time_keep,
 			vector< array<vector<neuron_t>, 2> >& neuron_list,
-			vector< array<vector<elec_t>, 2> >& synaptic_current_list
+			vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+			vector<	array<set<synapse_t>, 2> >& strong_edge_list
 		) noexcept;
 
 		void serial_run
 		(
 			step_time_t arg_time_keep,
 			vector< array<vector<neuron_t>, 2> >& neuron_list,
-			vector< array<vector<elec_t>, 2> >& synaptic_current_list
+			vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+			vector<	array<set<synapse_t>, 2> >& strong_edge_list
 		) noexcept;
 
 		void parallel_run
 		(
 			step_time_t arg_time_keep,
 			vector< array<vector<neuron_t>, 2> >& neuron_list,
-			vector< array<vector<elec_t>, 2> >& synaptic_current_list
+			vector< array<vector<elec_t>, 2> >& synaptic_current_list,
+			vector<	array<set<synapse_t>, 2> >& strong_edge_list
 		) noexcept;
 
 		void do_parallel_run
@@ -190,6 +199,7 @@ namespace Juerka::CommonNet
 			step_time_t arg_time_keep,
 			vector< array< vector<neuron_t>, 2> >& neuron_list,
 			vector< array< vector<elec_t>, 2> >& synaptic_current_list,
+			vector< array<set<synapse_t>, 2> >& strong_edge_list,
 			uint_fast32_t thread_serial_number
 		) noexcept;
 

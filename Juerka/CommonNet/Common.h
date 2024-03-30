@@ -26,6 +26,9 @@ namespace Juerka::CommonNet
 	inline constexpr static size_t INPUT_SIDE = 0;
 	inline constexpr static size_t OUTPUT_SIDE = 1;
 
+	inline constexpr static size_t ADDITION_SIDE = 0;
+	inline constexpr static size_t SUBTRACTION_SIDE = 1;
+
 	struct SerialParam
 	{
 		uint64_t rand_seed;
@@ -38,5 +41,9 @@ namespace Juerka::CommonNet
 		synapse_t* prev_conn_serial_index;
 		synapse_t* pre_conn_start_index;
 	};
-}
 
+	struct LogParam
+	{
+		bool is_record_weights;
+	};
+}

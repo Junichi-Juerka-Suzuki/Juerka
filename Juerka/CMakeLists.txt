@@ -15,7 +15,7 @@ add_executable (Juerka "CommonNet/Common.h"
 	"Main/main.cpp"
 	"Utility/Logger.h" "Utility/Logger.cpp"
 	"Utility/TimeRecorder.hpp"
-)
+ "Utility/WeightLogger.cpp" "Utility/WeightLogger.h")
 
 
 target_link_libraries(Juerka tbb)
