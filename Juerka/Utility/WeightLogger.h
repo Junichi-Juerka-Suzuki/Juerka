@@ -7,6 +7,7 @@
 #include <ctime>
 #include <filesystem>
 #include <fstream>
+#include <map>
 #include <set>
 #include <sstream>
 #include <string>
@@ -19,6 +20,7 @@ namespace Juerka::Utility
 	using std::array;
 	using std::filesystem::create_directories;
 	using std::move;
+	using std::multimap;
 	using std::ofstream;
 	using std::ostringstream;
 	using std::put_time;
@@ -80,7 +82,7 @@ namespace Juerka::Utility
 		void log
 		(
 			Juerka::CommonNet::step_time_t time_keep,
-			vector< array<set<Juerka::CommonNet::synapse_t>, 2> >& strong_edge_list
+			vector< array<multimap<Juerka::CommonNet::neuron_t, Juerka::CommonNet::neuron_t>, 2> >& strong_edge_list
 		);
 	};
 }

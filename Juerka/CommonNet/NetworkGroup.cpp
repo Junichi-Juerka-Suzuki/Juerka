@@ -1,11 +1,13 @@
 #include <cassert>
 #include <functional>
+#include <map>
 
 #include "NetworkGroup.h"
 
 namespace Juerka::CommonNet
 {
 	using std::bind;
+	using std::multimap;
 
 	void NetworkGroup::work
 	(
@@ -90,7 +92,7 @@ namespace Juerka::CommonNet
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
 		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-		vector<	array<set<synapse_t>, 2> >& strong_edge_list
+		vector<	array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 	) noexcept
 	{
 		if(is_run_parallel)
@@ -108,7 +110,7 @@ namespace Juerka::CommonNet
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
 		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-		vector<	array<set<synapse_t>, 2> >& strong_edge_list
+		vector<	array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 	) noexcept
 	{
 		exchange_internetwork_signals(neuron_list, synaptic_current_list);
@@ -124,7 +126,7 @@ namespace Juerka::CommonNet
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
 		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-		vector< array<set<synapse_t>, 2> >& strong_edge_list
+		vector< array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 	) noexcept
 	{
 		do_parallel_progress.a.store(0);
@@ -144,7 +146,7 @@ namespace Juerka::CommonNet
 		step_time_t arg_time_keep,
 		vector< array<vector<neuron_t>, 2> >& neuron_list,
 		vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-		vector< array<set<synapse_t>, 2> >& strong_edge_list,
+		vector< array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list,
 		uint_fast32_t thread_serial_number
 	) noexcept
 	{

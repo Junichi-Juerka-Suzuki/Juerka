@@ -4,6 +4,7 @@
 #include <deque>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <random>
 #include <set>
@@ -21,6 +22,7 @@ namespace Juerka::CommonNet
 	using std::cout;
 	using std::deque;
 	using std::move;
+	using std::multimap;
 	using std::mt19937_64;
 	using std::ofstream;
 	using std::ostream;
@@ -106,7 +108,7 @@ namespace Juerka::CommonNet
 			step_time_t arg_time_keep,
 			array<vector<neuron_t>, 2>& target_neuron_list,
 			array<vector<elec_t>, 2>& synaptic_current_list,
-			array<set<synapse_t>, 2>& strong_edge_list
+			array<multimap<neuron_t, neuron_t>, 2>& strong_edge_list
 		) noexcept;
 
 		//routines.
@@ -146,7 +148,7 @@ namespace Juerka::CommonNet
 
 		//for network analysis.
 	private:
-		void extract_network_graph_edges(array<set<synapse_t>, 2>& strong_edge_list);
+		void extract_network_graph_edges(array<multimap<neuron_t, neuron_t>, 2>& strong_edge_list);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,6 +1,7 @@
 #include <array>
 #include <cstdint>
 #include <cstdlib>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -44,7 +45,7 @@ namespace Juerka::Main
 
 		std::vector< std::array<std::vector<Juerka::CommonNet::neuron_t>, 2> > target_neuron_list(network_size);
 		std::vector< std::array<std::vector<Juerka::CommonNet::elec_t>, 2> > synaptic_current_list(network_size);
-		std::vector< std::array<std::set<Juerka::CommonNet::synapse_t>, 2> > strong_edge_list(network_size);
+		std::vector< std::array<std::multimap<Juerka::CommonNet::neuron_t, Juerka::CommonNet::neuron_t>, 2> > strong_edge_list(network_size);
 
 		Juerka::CommonNet::NetworkGroup ng(network_size, is_run_parallel, is_monitor_performance, is_record_weights);
 		Juerka::Utility::Logger logger(network_size);

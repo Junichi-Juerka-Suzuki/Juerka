@@ -14,7 +14,9 @@
 #include <execution>
 #include <iostream>
 #include <iterator>
+#include <map>
 #include <random>
+#include <set>
 
 #include "Common.h"
 #include "SerialNet.h"
@@ -30,6 +32,8 @@ namespace Juerka::CommonNet
 	using std::inserter;
 	using std::int_fast64_t;
 	using std::mt19937_64;
+	using std::multimap;
+	using std::set;
 	using std::set_difference;
 	using std::size_t;
 	using std::sort;
@@ -41,7 +45,7 @@ namespace Juerka::CommonNet
 		step_time_t arg_time_keep,
 		array<vector<neuron_t>, 2>& target_neuron_list,
 		array<vector<elec_t>, 2>& synaptic_current_list,
-		array<set<synapse_t>, 2>& strong_edge_list
+		array<multimap<neuron_t, neuron_t>, 2>& strong_edge_list
 	) noexcept
 	{
 		time_keep = arg_time_keep;
@@ -616,9 +620,10 @@ namespace Juerka::CommonNet
 		conn_weight[serial_index] = new_j_candidate;
 	}
 
-	void SerialNet::extract_network_graph_edges(array<set<synapse_t>, 2>& strong_edge_list)
+	void SerialNet::extract_network_graph_edges(array<multimap<neuron_t,neuron_t>, 2>& strong_edge_list)
 	{
 		set<synapse_t> new_extracted;
+		array<set<synapse_t>, 2> network_difference;
 
 		for(synapse_t i=0; i<N*C; i++)
 		{
@@ -633,15 +638,41 @@ namespace Juerka::CommonNet
 		(
 			new_extracted.begin(), new_extracted.end(),
 			extracted.begin(), extracted.end(),
-			inserter(strong_edge_list[ADDITION_SIDE], strong_edge_list[ADDITION_SIDE].end())
+			inserter(network_difference[ADDITION_SIDE], network_difference[ADDITION_SIDE].end())
 		);
 	
 		set_difference
 		(
 			extracted.begin(), extracted.end(),
 			new_extracted.begin(), new_extracted.end(),
-			inserter(strong_edge_list[SUBTRACTION_SIDE], strong_edge_list[SUBTRACTION_SIDE].end())
+			inserter(network_difference[SUBTRACTION_SIDE], network_difference[SUBTRACTION_SIDE].end())
 		);
+
+		for
+		(
+			auto it = network_difference[ADDITION_SIDE].begin();
+			it != network_difference[ADDITION_SIDE].end();
+			it++
+		)
+		{
+			synapse_t serial_index(*it);
+			neuron_t pre((serial_index)/C);
+			neuron_t post(post_conn_next_neuron[serial_index]);
+			strong_edge_list[ADDITION_SIDE].emplace(pre, post);
+		}
+
+		for
+		(
+			auto it = network_difference[SUBTRACTION_SIDE].begin();
+			it != network_difference[SUBTRACTION_SIDE].end();
+			it++
+		)
+		{
+			synapse_t serial_index(*it);
+			neuron_t pre((serial_index) / C);
+			neuron_t post(post_conn_next_neuron[serial_index]);
+			strong_edge_list[SUBTRACTION_SIDE].emplace(pre, post);
+		}
 
 		extracted.swap(new_extracted);
 	}

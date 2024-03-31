@@ -4,6 +4,7 @@
 #include <atomic>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <queue>
 #include <semaphore>
@@ -26,6 +27,7 @@ namespace Juerka::CommonNet
 	using std::function;
 	using std::jthread;
 	using std::move;
+	using std::multimap;
 	using std::queue;
 	using std::ref;
 	using std::stop_token;
@@ -175,7 +177,7 @@ namespace Juerka::CommonNet
 			step_time_t arg_time_keep,
 			vector< array<vector<neuron_t>, 2> >& neuron_list,
 			vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-			vector<	array<set<synapse_t>, 2> >& strong_edge_list
+			vector<	array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 		) noexcept;
 
 		void serial_run
@@ -183,7 +185,7 @@ namespace Juerka::CommonNet
 			step_time_t arg_time_keep,
 			vector< array<vector<neuron_t>, 2> >& neuron_list,
 			vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-			vector<	array<set<synapse_t>, 2> >& strong_edge_list
+			vector<	array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 		) noexcept;
 
 		void parallel_run
@@ -191,7 +193,7 @@ namespace Juerka::CommonNet
 			step_time_t arg_time_keep,
 			vector< array<vector<neuron_t>, 2> >& neuron_list,
 			vector< array<vector<elec_t>, 2> >& synaptic_current_list,
-			vector<	array<set<synapse_t>, 2> >& strong_edge_list
+			vector<	array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 		) noexcept;
 
 		void do_parallel_run
@@ -199,7 +201,7 @@ namespace Juerka::CommonNet
 			step_time_t arg_time_keep,
 			vector< array< vector<neuron_t>, 2> >& neuron_list,
 			vector< array< vector<elec_t>, 2> >& synaptic_current_list,
-			vector< array<set<synapse_t>, 2> >& strong_edge_list,
+			vector< array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list,
 			uint_fast32_t thread_serial_number
 		) noexcept;
 
