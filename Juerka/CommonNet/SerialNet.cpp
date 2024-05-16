@@ -97,6 +97,7 @@ namespace Juerka::CommonNet
 			synaptic_current_list[OUTPUT_SIDE].clear();
 
 			const auto& target_vector(is_fired_list);
+
 			for(auto it=target_vector.begin(); it!=target_vector.end(); it++)
 			{
 				neuron_t neuron_index(*it);

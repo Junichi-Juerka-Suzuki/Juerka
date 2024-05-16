@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt : Juerka の CMake プロジェクト。ソースを含めて、次を定義します:
 # プロジェクト専用ロジックはこちらです。
 
-find_package(TBB REQUIRED COMPONENTS tbb)
+#find_package(TBB REQUIRED COMPONENTS tbb)
 
 #add_subdirectory(CommonNet)
 #add_subdirectory(Main)
@@ -18,7 +18,7 @@ add_executable (Juerka "CommonNet/Common.h"
  "Utility/WeightLogger.cpp" "Utility/WeightLogger.h")
 
 
-target_link_libraries(Juerka tbb)
+#target_link_libraries(Juerka tbb)
 
 target_include_directories(Juerka PRIVATE "CommonNet")
 target_include_directories(Juerka PRIVATE "Main")

@@ -19,7 +19,7 @@ int main(void) noexcept
 {
 	bool is_run_parallel(true);
 	bool is_monitor_performance(false);
-	bool is_record_weights(true);
+	bool is_record_weights(false);
 
 
 	Juerka::Main::run

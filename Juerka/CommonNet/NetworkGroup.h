@@ -18,6 +18,7 @@
 
 namespace Juerka::CommonNet
 {
+	using std::align_val_t;
 	using std::array;
 	using std::atomic;
 	using std::binary_semaphore;
@@ -48,13 +49,13 @@ namespace Juerka::CommonNet
 		const uint_fast32_t Ng;
 
 		//Buffers.
-		elec_t* v;
-		elec_t* u;
-		elec_t* current_I;
-		synapse_t* post_conn_next_neuron;
-		elec_t* conn_weight;
-		synapse_t* prev_conn_serial_index;
-		synapse_t* pre_conn_start_index;
+		alignas(ALIGNMENT) elec_t* v;
+		alignas(ALIGNMENT) elec_t* u;
+		alignas(ALIGNMENT) elec_t* current_I;
+		alignas(ALIGNMENT) synapse_t* post_conn_next_neuron;
+		alignas(ALIGNMENT) elec_t* conn_weight;
+		alignas(ALIGNMENT) synapse_t* prev_conn_serial_index;
+		alignas(ALIGNMENT) synapse_t* pre_conn_start_index;
 
 		//Network itself.
 		vector<SerialNet> network_list;
@@ -106,13 +107,13 @@ namespace Juerka::CommonNet
 			bool arg_is_record_weights = false
 		) noexcept :
 		  Ng(arg_Ng),
-		  v(static_cast<elec_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*sizeof(elec_t))))),
-		  u(static_cast<elec_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*sizeof(elec_t))))),
-		  current_I(static_cast<elec_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*sizeof(elec_t))))),
-		  post_conn_next_neuron(static_cast<synapse_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*SerialNet::C*sizeof(synapse_t))))),
-		  conn_weight(static_cast<elec_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*SerialNet::C*sizeof(elec_t))))),
-		  prev_conn_serial_index(static_cast<synapse_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N*SerialNet::C*sizeof(synapse_t))))),
-		  pre_conn_start_index(static_cast<synapse_t*>(aligned_alloc(ALIGNMENT, Ng*(SerialNet::N+1)*sizeof(synapse_t)))),
+		  v(static_cast<elec_t*>(::operator new(sizeof(elec_t) * Ng * (SerialNet::N), align_val_t{ ALIGNMENT }))),
+		  u(static_cast<elec_t*>(::operator new(sizeof(elec_t) * Ng * (SerialNet::N), align_val_t{ ALIGNMENT }))),
+		  current_I(static_cast<elec_t*>(::operator new(sizeof(elec_t) * Ng * (SerialNet::N), align_val_t{ ALIGNMENT }))),
+		  post_conn_next_neuron(static_cast<synapse_t*>(::operator new(sizeof(synapse_t) * Ng * (SerialNet::N * SerialNet::C), align_val_t{ ALIGNMENT }))),
+		  conn_weight(static_cast<elec_t*>(::operator new(sizeof(elec_t) * Ng * (SerialNet::N * SerialNet::C), align_val_t{ ALIGNMENT }))),
+		  prev_conn_serial_index(static_cast<synapse_t*>(::operator new(sizeof(synapse_t) * Ng * (SerialNet::N * SerialNet::C), align_val_t{ ALIGNMENT }))),
+		  pre_conn_start_index(static_cast<synapse_t*>(::operator new(sizeof(synapse_t) * Ng * (SerialNet::N+1), align_val_t{ ALIGNMENT }))),
 		  is_run_parallel(arg_is_run_parallel),
 		  n_asyncs((thread::hardware_concurrency()==1)?(1):(thread::hardware_concurrency()-1)),
 		  do_parallel_progress(0),
@@ -167,6 +168,14 @@ namespace Juerka::CommonNet
 			{
 				complete_stop_threads();
 			}
+
+			::operator delete(v, align_val_t{ ALIGNMENT });
+			::operator delete(u, align_val_t{ ALIGNMENT });
+			::operator delete(current_I, align_val_t{ ALIGNMENT });
+			::operator delete(post_conn_next_neuron, align_val_t{ ALIGNMENT });
+			::operator delete(conn_weight, align_val_t{ ALIGNMENT });
+			::operator delete(prev_conn_serial_index, align_val_t{ ALIGNMENT });
+			::operator delete(pre_conn_start_index, align_val_t{ ALIGNMENT });
 		}
 
 		//public functions.

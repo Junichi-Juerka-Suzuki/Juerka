@@ -196,7 +196,7 @@ namespace Juerka::CommonNet
 		inline constexpr static elec_t conn_weight_init_i = -5.0;
 		inline constexpr static elec_t conn_weight_to_external_e = 6.0;
 		inline constexpr static elec_t conn_weight_to_external_i = -5.0;
-		inline constexpr static elec_t conn_weight_network_generate_threshold_e = 40.0;
+		inline constexpr static elec_t conn_weight_network_generate_threshold_e = 50.0;
 
 		//STDP parameter(s).
 	private:
