@@ -219,31 +219,27 @@ namespace Juerka::CommonNet
 					continue;
 				}
 
-//				for (size_t k=0; k<signal_unit; k++)
-//				{
-					const size_t target_neuron_list_index(((fired_neuron_index / signal_unit)));
+				const size_t target_neuron_list_index(((fired_neuron_index / signal_unit)));
 
-					const size_t exc_inh_ratio(Juerka::CommonNet::SerialNet::Ne / Juerka::CommonNet::SerialNet::Ni);
+				const size_t exc_inh_ratio(Juerka::CommonNet::SerialNet::Ne / Juerka::CommonNet::SerialNet::Ni);
 
-					// connection from/to the same network is inhibited here.
-					// it is handled in the SerialNet.
-					if (target_neuron_list_index != i)
-					{
-						const neuron_t N(Juerka::CommonNet::SerialNet::N);
-//						const neuron_t target_neuron_index(fired_neuron_index);
-						const neuron_t target_neuron_index(Juerka::CommonNet::SerialNet::Ne + fired_neuron_index / exc_inh_ratio);
+				// connection from/to the same network is inhibited here.
+				// it is handled in the SerialNet.
+				if (target_neuron_list_index != i)
+				{
+					const neuron_t N(Juerka::CommonNet::SerialNet::N);
+					const neuron_t target_neuron_index(Juerka::CommonNet::SerialNet::Ne + fired_neuron_index / exc_inh_ratio);
 
-						arg_neuron_list_list
-							[target_neuron_list_index]
-							[Juerka::CommonNet::INPUT_SIDE]
-							.emplace_back(target_neuron_index);
+					arg_neuron_list_list
+						[target_neuron_list_index]
+						[Juerka::CommonNet::INPUT_SIDE]
+						.emplace_back(target_neuron_index);
 
-						arg_synaptic_current_list_list
-							[target_neuron_list_index]
-							[Juerka::CommonNet::INPUT_SIDE]
-							.emplace_back(synaptic_current);
-					}//if
-//				}//for k
+					arg_synaptic_current_list_list
+						[target_neuron_list_index]
+						[Juerka::CommonNet::INPUT_SIDE]
+						.emplace_back(synaptic_current);
+				}//if
 			}//for j
 		}//for i
 	}//void NetworkGroup::exchange_internetwork_signals
