@@ -130,7 +130,7 @@ namespace Juerka::CommonNet
 			for(uint_fast32_t i=0; i<Ng; i+=1)
 			{
 				//TODO: care alignment. static_assert?
-				const SerialParam serial_param
+				SerialParam serial_param
 				{
 					.rand_seed = i, //TODO: consider.
 					.time_keep = 0,

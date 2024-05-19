@@ -28,13 +28,13 @@ namespace Juerka::Utility
 			out_list[k] << time_keep << " added:\n";
 			for(auto it=inner_set_0.begin(); it!=inner_set_0.end(); it++)
 			{
-				out_list[k] << ' ' << it->first;
+				out_list[k] << ' ' << it->first; // "from" neuron.
 			}
 			out_list[k] << '\n';
 
 			for (auto it = inner_set_0.begin(); it != inner_set_0.end(); it++)
 			{
-				out_list[k] << ' ' << it->second;
+				out_list[k] << ' ' << it->second; // "to" neuron.
 			}
 			out_list[k] << '\n';
 
@@ -42,13 +42,13 @@ namespace Juerka::Utility
 			out_list[k] << time_keep << " deleted:\n";
 			for (auto it = inner_set_1.begin(); it != inner_set_1.end(); it++)
 			{
-				out_list[k] << ' ' << it->first;
+				out_list[k] << ' ' << it->first; // "from" neuron.
 			}
 			out_list[k] << '\n';
 
 			for (auto it = inner_set_1.begin(); it != inner_set_1.end(); it++)
 			{
-				out_list[k] << ' ' << it->second;
+				out_list[k] << ' ' << it->second; // "to" neuron.
 			}
 			out_list[k] << '\n';
 		}
