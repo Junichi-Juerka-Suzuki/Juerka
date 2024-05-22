@@ -9,8 +9,8 @@ add_library(Juerka-core STATIC
 	"Utility/TimeRecorder.hpp" "Utility/WeightLogger.cpp"
 	"Utility/WeightLogger.h")
 
-target_include_directories(Juerka-core PRIVATE "CommonNet")
-target_include_directories(Juerka-core PRIVATE "Utility")
+target_include_directories(Juerka-core PUBLIC "CommonNet")
+target_include_directories(Juerka-core PUBLIC "Utility")
 
 set_property(TARGET Juerka-core PROPERTY CXX_STANDARD 20)
 
