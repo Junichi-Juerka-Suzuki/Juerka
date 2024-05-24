@@ -186,12 +186,6 @@ namespace Juerka::CommonNet
 
 		for(size_t i=0; i<size_i; i+=1)
 		{
-			arg_neuron_list_list[i][Juerka::CommonNet::INPUT_SIDE].clear();
-			arg_synaptic_current_list_list[i][Juerka::CommonNet::INPUT_SIDE].clear();
-		}
-
-		for(size_t i=0; i<size_i; i+=1)
-		{
 			const auto& fired_neuron_list
 			(
 				arg_neuron_list_list[i][Juerka::CommonNet::OUTPUT_SIDE]
