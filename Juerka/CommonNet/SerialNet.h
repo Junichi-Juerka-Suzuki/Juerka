@@ -200,7 +200,8 @@ namespace Juerka::CommonNet
 
 		//STDP parameter(s).
 	private:
-		inline constexpr static elec_t ETA = 1.05;
+		inline constexpr static elec_t ETA = 1.1;
+		//inline constexpr static elec_t ETA = 1.05;
 		//inline constexpr static elec_t ETA = 0.75;
 		//	inline constexpr static elec_t ETA = 0.01;
 	//	inline constexpr static elec_t J0 = 0.025;
