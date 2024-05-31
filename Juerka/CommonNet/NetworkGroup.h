@@ -104,7 +104,8 @@ namespace Juerka::CommonNet
 			uint_fast32_t arg_Ng,
 			bool arg_is_run_parallel=false,
 			bool arg_is_monitor_performance = false,
-			bool arg_is_record_weights = false
+			bool arg_is_record_weights = false,
+			bool arg_is_apply_tonic_inputs = false
 		) noexcept :
 		  Ng(arg_Ng),
 		  v(static_cast<elec_t*>(::operator new(sizeof(elec_t) * Ng * (SerialNet::N), align_val_t{ ALIGNMENT }))),
@@ -132,6 +133,7 @@ namespace Juerka::CommonNet
 				//TODO: care alignment. static_assert?
 				SerialParam serial_param
 				{
+					.is_need_apply_tonic_inputs = arg_is_apply_tonic_inputs,
 					.rand_seed = i, //TODO: consider.
 					.time_keep = 0,
 					.v = &(v[N*i]),

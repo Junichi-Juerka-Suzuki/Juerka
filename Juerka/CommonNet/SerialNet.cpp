@@ -68,7 +68,10 @@ namespace Juerka::CommonNet
 
 		time_recorder->start_record();
 
-		apply_tonic_inputs();
+		if (is_need_apply_tonic_inputs)
+		{
+			apply_tonic_inputs();
+		}
 
 		time_recorder->end_record();
 

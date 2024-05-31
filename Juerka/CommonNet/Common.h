@@ -31,6 +31,7 @@ namespace Juerka::CommonNet
 
 	struct SerialParam
 	{
+		bool is_need_apply_tonic_inputs;
 		uint64_t rand_seed;
 		step_time_t time_keep;
 		elec_t* v;

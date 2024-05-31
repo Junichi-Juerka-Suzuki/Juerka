@@ -69,6 +69,7 @@ namespace Juerka::CommonNet
 		  exc_fire_reservation(vector(D, vector<synapse_t>())),
 		  pre_connection(N, vector<synapse_t>()),
 		  pre_connection_list(vector(N, vector<synapse_t>())),
+		  is_need_apply_tonic_inputs(serial_param.is_need_apply_tonic_inputs),
 		  rand_seed(serial_param.rand_seed),
 		  engine_drive(serial_param.rand_seed),
 		  dist_drive(EXTERNAL_DRIVE_INPUT_START_INDEX, EXTERNAL_DRIVE_INPUT_END_CENTINEL-1),
@@ -275,6 +276,7 @@ namespace Juerka::CommonNet
 
 		//for generating random tonic inputs.
 	private:
+		bool is_need_apply_tonic_inputs;
 		uint64_t rand_seed;
 		mt19937_64 engine_drive;
 		uniform_int_distribution<> dist_drive;
