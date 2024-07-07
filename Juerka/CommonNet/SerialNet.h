@@ -38,9 +38,9 @@ namespace Juerka::CommonNet
 	//Spike neural network constants.
 	enum snn_t
 	{
-		CONST_SUB_BLOCK_Ne = 800,
-		CONST_SUB_BLOCK_Ni = 200,
-		CONST_SUB_BLOCK_N = 1000,
+		CONST_SUB_BLOCK_Ne = 1600,
+		CONST_SUB_BLOCK_Ni = 400,
+		CONST_SUB_BLOCK_N = 2000,
 		SNN_T_NUM
 	};
 
@@ -69,6 +69,8 @@ namespace Juerka::CommonNet
 		  exc_fire_reservation(vector(D, vector<synapse_t>())),
 		  pre_connection(N, vector<synapse_t>()),
 		  pre_connection_list(vector(N, vector<synapse_t>())),
+		  is_need_update_weights(serial_param.initial_setup_for_update_weights),
+		  is_first_call(true),
 		  is_need_apply_tonic_inputs(serial_param.is_need_apply_tonic_inputs),
 		  rand_seed(serial_param.rand_seed),
 		  engine_drive(serial_param.rand_seed),
@@ -111,6 +113,14 @@ namespace Juerka::CommonNet
 			array<vector<elec_t>, 2>& synaptic_current_list,
 			array<multimap<neuron_t, neuron_t>, 2>& strong_edge_list
 		) noexcept;
+
+		inline void set_update_weights
+		(
+			bool arg_is_need_update_weights
+		) noexcept
+		{
+			is_need_update_weights = arg_is_need_update_weights;
+		}
 
 		//routines.
 	private:
@@ -201,7 +211,7 @@ namespace Juerka::CommonNet
 
 		//STDP parameter(s).
 	private:
-		inline constexpr static elec_t ETA = 1.1;
+		inline constexpr static elec_t ETA = 1.0;
 		//inline constexpr static elec_t ETA = 1.05;
 		//inline constexpr static elec_t ETA = 0.75;
 		//	inline constexpr static elec_t ETA = 0.01;
@@ -273,6 +283,9 @@ namespace Juerka::CommonNet
 		vector<synapse_t> j_update_list;
 		vector<elec_t> j_diff_time_list;
 		vector<elec_t> j_weight_list;
+
+		bool is_need_update_weights;
+		bool is_first_call;
 
 		//for generating random tonic inputs.
 	private:

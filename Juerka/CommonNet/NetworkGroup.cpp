@@ -60,7 +60,7 @@ namespace Juerka::CommonNet
 
 	void NetworkGroup::prepare_and_run_asyncs
 	(
-		const function<void(void)>&& func,
+		function<void(void)>&& func,
 		const uint_fast32_t async_serial_number
 	) noexcept
 	{
@@ -113,7 +113,7 @@ namespace Juerka::CommonNet
 		vector<	array<multimap<neuron_t, neuron_t>, 2> >& strong_edge_list
 	) noexcept
 	{
-		exchange_internetwork_signals(neuron_list, synaptic_current_list);
+		//exchange_internetwork_signals(neuron_list, synaptic_current_list);
 
 		for(uint_fast32_t i=0; i<Ng; i+=1)
 		{
@@ -131,7 +131,7 @@ namespace Juerka::CommonNet
 	{
 		do_parallel_progress.a.store(0);
 
-		exchange_internetwork_signals(neuron_list, synaptic_current_list);
+		//exchange_internetwork_signals(neuron_list, synaptic_current_list);
 
 		for(uint_fast32_t i=0; i<n_asyncs; i+=1)
 		{
@@ -237,4 +237,17 @@ namespace Juerka::CommonNet
 			}//for j
 		}//for i
 	}//void NetworkGroup::exchange_internetwork_signals
+
+	void NetworkGroup::set_update_weights
+	(
+		bool is_update_weights,
+		const size_t start_index,
+		const size_t end_sentinel
+	) noexcept
+	{
+		for (size_t i = start_index; i < end_sentinel; i += 1)
+		{
+			network_list[i].set_update_weights(is_update_weights);
+		}
+	}//void NetworkGroup::set_update_weights
 }//namespace Juerka::CommonNet

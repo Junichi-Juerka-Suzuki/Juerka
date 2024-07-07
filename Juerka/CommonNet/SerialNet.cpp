@@ -190,8 +190,7 @@ namespace Juerka::CommonNet
 
 	void SerialNet::setup_connections(void) noexcept
 	{
-		//anonymous block Lv.1
-		if(0 == time_keep)
+		if(is_first_call)
 		{
 			init_neurons();
 
@@ -235,8 +234,9 @@ namespace Juerka::CommonNet
 				pre_conn_start_index[l] = accum_count;
 
 			}//end anonymous block Lv.2
+			is_first_call = false;
+		}//if(is_first_call)
 
-		}//end anonymous block Lv.1
 	}
 
 	void SerialNet::init_neurons(void) noexcept
@@ -470,6 +470,11 @@ namespace Juerka::CommonNet
 
 	void SerialNet::update_pre_neuron_weights(void) noexcept
 	{
+		if (not is_need_update_weights)
+		{
+			return;
+		}
+
 		const auto& target_is_fired_list(is_fired_list);
 
 		const size_t M(target_is_fired_list.size());
@@ -535,6 +540,11 @@ namespace Juerka::CommonNet
 
 	void SerialNet::update_post_neuron_weights(void) noexcept
 	{
+		if (not is_need_update_weights)
+		{
+			return;
+		}
+
 		const step_time_t local_current_time(time_keep % D);
 
 		step_time_t post_fire_time;

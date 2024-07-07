@@ -105,7 +105,8 @@ namespace Juerka::CommonNet
 			bool arg_is_run_parallel=false,
 			bool arg_is_monitor_performance = false,
 			bool arg_is_record_weights = false,
-			bool arg_is_apply_tonic_inputs = false
+			bool arg_is_apply_tonic_inputs = false,
+			bool arg_initial_setup_for_update_weights = true
 		) noexcept :
 		  Ng(arg_Ng),
 		  v(static_cast<elec_t*>(::operator new(sizeof(elec_t) * Ng * (SerialNet::N), align_val_t{ ALIGNMENT }))),
@@ -133,6 +134,7 @@ namespace Juerka::CommonNet
 				//TODO: care alignment. static_assert?
 				SerialParam serial_param
 				{
+					.initial_setup_for_update_weights = arg_initial_setup_for_update_weights,
 					.is_need_apply_tonic_inputs = arg_is_apply_tonic_inputs,
 					.rand_seed = i, //TODO: consider.
 					.time_keep = 0,
@@ -222,11 +224,18 @@ namespace Juerka::CommonNet
 			vector< array<vector<elec_t>, 2> >& arg_synaptic_current_list_list
 		) noexcept;
 
+		void set_update_weights
+		(
+			bool,
+			const size_t,
+			const size_t
+		) noexcept;
+
 		//for thread management.
 	private:
 		void work(stop_token stoken, uint_fast32_t thread_serial_number) noexcept;
 
-		void prepare_and_run_asyncs(const function<void(void)>&& func, const uint_fast32_t async_serial_number) noexcept;
+		void prepare_and_run_asyncs(function<void(void)>&& func, const uint_fast32_t async_serial_number) noexcept;
 
 		void wait_all_asyncs(void) noexcept;
 

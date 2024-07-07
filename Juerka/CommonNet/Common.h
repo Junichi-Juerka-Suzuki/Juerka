@@ -20,7 +20,7 @@ namespace Juerka::CommonNet
 	using step_time_t = std::int_fast64_t;
 	using elec_t = double;
 
-	inline constexpr static step_time_t TIME_END = 1000; //msec.
+	inline constexpr static step_time_t TIME_END = 2000; //msec.
 	inline constexpr static size_t ALIGNMENT = 64;
 
 	inline constexpr static size_t INPUT_SIDE = 0;
@@ -31,6 +31,7 @@ namespace Juerka::CommonNet
 
 	struct SerialParam
 	{
+		bool initial_setup_for_update_weights;
 		bool is_need_apply_tonic_inputs;
 		uint64_t rand_seed;
 		step_time_t time_keep;
