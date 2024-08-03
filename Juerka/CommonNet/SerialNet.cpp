@@ -251,6 +251,7 @@ namespace Juerka::CommonNet
 
 			v[i] = v_init;
 			u[i] = u_init;
+			current_I[i] = i_init;
 
 			{
 				post_connection.clear();
